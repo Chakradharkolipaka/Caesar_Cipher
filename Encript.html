@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caesar Cipher Encoder/Decoder</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #e0f7fa, #e1bee7);
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            display: flex;
+            gap: 20px;
+            width: 80%;
+            height: 80%;
+        }
+        .input-section, .button-section, .result-section {
+            width: 30%;
+            height: 50%;
+            padding: 10px;
+            border-radius: 15px;
+            box-shadow: 1px 2px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        .input-section {
+            background: #ffecb3;
+        }
+        .button-section {
+            background: #bbdefb;
+        }
+        .result-section {
+            background: #c8e6c9;
+        }
+        textarea, input{
+            width: 80%;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            outline: none;
+        }
+        button{
+            width: 50%;
+            height:40px;
+            padding: 5px;
+            border: 1px solid #b2adad;
+            border-radius: 15px;
+        }
+        textarea {
+            height: 80px;
+            resize: none;
+        }
+        input {
+            background: #ffffff;
+        }
+        button {
+            background: #007bff;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="input-section">
+            <textarea id="inputText" placeholder="Text"></textarea><br><br>
+            <input type="number" id="shift" placeholder="Shift" min="1" max="25">
+        </div>
+        
+        <div class="button-section">
+            <button onclick="encodeText()">Encode</button><br>
+            <button onclick="decodeText()">Decode</button><br>
+            <button onclick="clearText()">Clear</button><br>
+        </div>
+        
+        <div class="result-section">
+            <h3>Result:</h3>
+            <textarea id="resultText" readonly></textarea>
+        </div>
+    </div>
+
+    <script>
+        function caesarCipher(text, shift, encode = true) {
+            shift = shift % 26;
+            return text.split('').map(char => {
+                if (char.match(/[a-z]/i)) {
+                    const code = char.charCodeAt(0);
+                    const base = char >= 'a' ? 97 : 65;
+                    const offset = encode ? shift : -shift;
+                    return String.fromCharCode(((code - base + offset + 26) % 26) + base);
+                }
+                return char;
+            }).join('');
+        }
+
+        function encodeText() {
+            const inputText = document.getElementById('inputText').value;
+            const shift = parseInt(document.getElementById('shift').value) || 0;
+            document.getElementById('resultText').value = caesarCipher(inputText, shift, true);
+        }
+
+        function decodeText() {
+            const inputText = document.getElementById('inputText').value;
+            const shift = parseInt(document.getElementById('shift').value) || 0;
+            document.getElementById('resultText').value = caesarCipher(inputText, shift, false);
+        }
+
+        function clearText() {
+            document.getElementById('inputText').value = '';
+            document.getElementById('shift').value = '';
+            document.getElementById('resultText').value = '';
+        }
+    </script>
+</body>
+</html>
